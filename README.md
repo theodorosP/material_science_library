@@ -4,6 +4,7 @@ Introducing a groundbreaking library for generating artificial data, seamlessly 
 # Requirements
 
 python (> 2.7 but it should work with any version)
+
 atomic simulation environment ( > 3.15, but it should work with any version )
 
 
