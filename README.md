@@ -14,7 +14,7 @@ Step 1:
 
 git clone https://github.com/theodorosP/material_science_library.git
 
-Step 2: Add the path to dlePy folder to $PYTHONPATH environment. There are many ways to accomplish this. Here is an example.
+Step 2: Add the path to material_science_library folder to $PYTHONPATH environment. There are many ways to accomplish this. Here is an example.
 
 export PYTHONPATH=Path_to_material_science_library:$PYTHONPATH
 
