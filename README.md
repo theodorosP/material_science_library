@@ -3,7 +3,7 @@ Introducing a groundbreaking library for generating artificial data, seamlessly 
 
 # Requirements
 
-python (> 2.7 but it should work with any version)
+python (> 3.7 but it should work with any 3.x version)
 
 atomic simulation environment ( > 3.15, but it should work with any version )
 
