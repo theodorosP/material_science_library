@@ -148,3 +148,24 @@ def swap_atoms_symmetrically(system, at_1, at_2, atoms_to_move_1, atoms_to_move_
 		system[i].position[0] += system[at_2].position[0] - x_y_cords_1[0]
 		system[i].position[1] += system[at_2].position[1] - x_y_cords_1[1]
 	return system
+
+#system = the strucwe use
+#atom = Index of the atom which we want to add a new atom symmetrically
+#bonded_to = Index of the atom where the "atom" above is bonded to
+#to_bond = Index of the atom to which the new atom will be bonded.
+def add_atom_symmetrically(system, atom, bonded_to, to_bond):
+	pos_atom = list()
+	pos_bonded_to = list()
+	pos_to_bond = list()
+	delta_pos = {}
+	type_of_atom =  system[atom].symbol
+	keys = ["x", "y", "z"]
+	for i, j in enumerate(keys):
+		pos_atom.append( system[ atom ].position[i] )
+		pos_bonded_to.append( system[ bonded_to ].position[i] )
+		pos_to_bond.append( system[ to_bond ].position[i] )
+		delta_pos[ j ] = pos_to_bond[i] - pos_bonded_to[i]
+	print(delta_pos)
+	add_atoms(system, type_of_atom, system[ atom ].position[0] + delta_pos["x"], system[ atom ].position[1] + delta_pos["y"], system[ atom ].position[2] + delta_pos["z"] )
+	return( system )
+
