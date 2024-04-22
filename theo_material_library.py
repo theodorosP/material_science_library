@@ -6,6 +6,20 @@ def swap_atoms(system, atom1, atom2):
 		system[atom2].position[i] = aux[i]
 	return system
 
+#iso surface plotting
+def get_Fmax_Fmin( file ):
+	values = list()
+	with open( file, "r" ) as read_file:
+		for i in read_file:
+			if len( i.split() ) == 5:
+				values.extend( i.split()  )
+	values = [ float(i) for i in values ]
+	min_value = min( values )
+	max_value = max( values )
+	print("F max is: ", max_value )
+	print("F min is: ", min_value )
+	return max_value, min_value
+
 def change_position(system, atom, x, y, z):
 	l = [x, y, z]
 	for i in range(0, len(l)):
