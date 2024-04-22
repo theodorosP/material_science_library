@@ -6,6 +6,18 @@ def swap_atoms(system, atom1, atom2):
 		system[atom2].position[i] = aux[i]
 	return system
 
+
+def total_charge( file ):
+    from dlePy.vasp.chgcar import read_chgcar, write_chgcar
+    import numpy as np
+    data = read_chgcar( file  )
+    system = data.atoms[ 0 ]
+    rho = data.chg[ 0 ]
+    max_F = np.max( rho )
+    min_F = np.min( rho )
+    ne = np.sum( rho ) * system.get_volume() / rho.shape[0] / rho.shape[1] / rho.shape[ 2 ]
+    return ne, max_F, min_F
+
 #iso surface plotting
 def get_Fmax_Fmin( file ):
 	values = list()
