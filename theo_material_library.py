@@ -7,7 +7,7 @@ import numpy as np
 #Shift the entire system so that the atom at index N is centered in the XY-plane of the simulation cell.
 #system (Atoms): The atomic system (structure) read using ASE, e.g., via `ase.io.read`.
 #N (int): Index of the atom to center. Typically, this is the index of an atom in the dissociating molecule (e.g., Oxygen in H2O or Nitrogen in a cation).
-def shift_center( system: Atoms, N: int ):
+def shift_center( system, N:int ):
 	if N < 0 or N >= len(system):
 		raise ValueError(f"Invalid atom index {N}. It must be between 0 and {len(system) - 1}.")
 	center = system[N].position
