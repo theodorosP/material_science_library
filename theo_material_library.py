@@ -1,4 +1,5 @@
 def change_atomic_number( system, lst ):
+	from ase.visualize import view
 	for i in lst:
 		if system[ i ].symbol == "O":
 			system[ i ].number = 4
