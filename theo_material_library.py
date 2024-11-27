@@ -4,6 +4,20 @@ from dlePy.vasp.chgcar import read_chgcar, write_chgcar
 from ase.build import add_adsorbate
 import numpy as np
 
+#Shift the entire system so that the atom at index N is centered in the XY-plane of the simulation cell.
+#system (Atoms): The atomic system (structure) read using ASE, e.g., via `ase.io.read`.
+#N (int): Index of the atom to center. Typically, this is the index of an atom in the dissociating molecule (e.g., Oxygen in H2O or Nitrogen in a cation).
+def shift_center( system: Atoms, N: int ):
+	if N < 0 or N >= len(system):
+		raise ValueError(f"Invalid atom index {N}. It must be between 0 and {len(system) - 1}.")
+	center = system[N].position
+	shift = -center + 0.5 * (system.cell[0] + system.cell[1])
+	shift[2] = 0
+	for atom in system:
+		atom.position += shift
+	system.wrap()
+	return system
+
 #add velocity for MD simulations
 def add_velocity( path_to_MD_CONTCAR ):
 	with open( path_to_MD_CONTCAR +  "/CONTCAR", 'r' ) as f:
