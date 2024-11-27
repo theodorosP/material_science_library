@@ -1,3 +1,11 @@
+def change_atomic_number( system, lst ):
+	for i in lst:
+		if system[ i ].symbol == "O":
+			system[ i ].number = 4
+		elif system[ i ].symbol == "H":
+			system[ i ].number = 2
+		view( system )
+
 def swap_atoms(system, atom1, atom2):
 	aux = list()
 	for i in range(0, 3):
@@ -5,32 +13,6 @@ def swap_atoms(system, atom1, atom2):
 		system[atom1].position[i] = system[atom2].position[i]
 		system[atom2].position[i] = aux[i]
 	return system
-
-
-def total_charge( file ):
-    from dlePy.vasp.chgcar import read_chgcar, write_chgcar
-    import numpy as np
-    data = read_chgcar( file  )
-    system = data.atoms[ 0 ]
-    rho = data.chg[ 0 ]
-    max_F = np.max( rho )
-    min_F = np.min( rho )
-    ne = np.sum( rho ) * system.get_volume() / rho.shape[0] / rho.shape[1] / rho.shape[ 2 ]
-    return ne, max_F, min_F
-
-#iso surface plotting
-def get_Fmax_Fmin( file ):
-	values = list()
-	with open( file, "r" ) as read_file:
-		for i in read_file:
-			if len( i.split() ) == 5:
-				values.extend( i.split()  )
-	values = [ float(i) for i in values ]
-	min_value = min( values )
-	max_value = max( values )
-	print("F max is: ", max_value )
-	print("F min is: ", min_value )
-	return max_value, min_value
 
 def change_position(system, atom, x, y, z):
 	l = [x, y, z]
