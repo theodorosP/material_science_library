@@ -1,3 +1,8 @@
+from ase.io import read, write
+from ase.visualize import view
+from dlePy.vasp.chgcar import read_chgcar, write_chgcar
+from ase.build import add_adsorbate
+import numpy as np
 
 #add velocity for MD simulations
 def add_velocity( path_to_MD_CONTCAR ):
@@ -14,15 +19,47 @@ def add_velocity( path_to_MD_CONTCAR ):
 		if w:
 			fout.write( line.strip() + '\n')
 	fout.close()
+	new_struc = read( "POSCAR" )
+	return new_struc
 
 def change_atomic_number( system, lst ):
-	from ase.visualize import view
-	for i in lst:
-		if system[ i ].symbol == "O":
-			system[ i ].number = 4
-		elif system[ i ].symbol == "H":
-			system[ i ].number = 2
-		view( system )
+    for i in lst:
+        if system[ i ].symbol == "O" or system[ i ].symbol == "N":
+            system[ i ].number = 4
+        elif system[ i ].symbol == "H":
+            system[ i ].number = 2
+    view( system )
+
+def delete_from_list(list_, elements_to_delete):
+    elements_to_delete.sort(reverse = True)
+    for i in elements_to_delete:
+        del l[i]
+    print(l)
+    return l
+
+def total_charge( file ):
+    data = read_chgcar( file  )
+    system = data.atoms[ 0 ]
+    rho = data.chg[ 0 ]
+    max_F = np.max( rho )
+    min_F = np.min( rho )
+    ne = np.sum( rho ) * system.get_volume() / rho.shape[0] / rho.shape[1] / rho.shape[ 2 ]
+    return ne, max_F, min_F
+
+
+def get_Fmax_Fmin( file ):
+	values = list()
+	with open( file, "r" ) as read_file:
+		for i in read_file:
+			if len( i.split() ) == 5:
+				values.extend( i.split()  )
+	values = [ float(i) for i in values ]
+	min_value = min( values )
+	max_value = max( values )
+	print("F max is: ", max_value )
+	print("F min is: ", min_value )
+	return max_value, min_value
+
 
 def swap_atoms(system, atom1, atom2):
 	aux = list()
@@ -84,7 +121,6 @@ def get_NELECT():
 #atom1 = integer number, it is the index of the first atom
 #atom2 = integer number, it is the index of the second atom
 def get_average_positions(struc, atom1, atom2):
-	import numpy as np
 	cordinates = ["x", "y", "z"]
 	average_positions = {}
 	for i in range(0, 3):
@@ -101,7 +137,6 @@ def get_average_positions(struc, atom1, atom2):
 #y_pos = y_cordinate, it's just a number 
 #z_pos = z_cordinate, it's just a number 
 def add_atoms(system, symbol, x_pos, y_pos, z_pos):
-	from ase.build import add_adsorbate
 	add_adsorbate(system, symbol, -1, position = (x_pos, y_pos), mol_index = 0 )
 	system[len(system) - 1 ].position[2] = z_pos 	
 	return system
@@ -175,6 +210,7 @@ def swap_atoms_symmetrically(system, at_1, at_2, atoms_to_move_1, atoms_to_move_
 		system[i].position[1] += system[at_2].position[1] - x_y_cords_1[1]
 	return system
 
+
 #system = the strucwe use
 #atom = Index of the atom which we want to add a new atom symmetrically
 #bonded_to = Index of the atom where the "atom" above is bonded to
@@ -194,4 +230,3 @@ def add_atom_symmetrically(system, atom, bonded_to, to_bond):
 	print(delta_pos)
 	add_atoms(system, type_of_atom, system[ atom ].position[0] + delta_pos["x"], system[ atom ].position[1] + delta_pos["y"], system[ atom ].position[2] + delta_pos["z"] )
 	return( system )
-
