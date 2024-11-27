@@ -1,3 +1,20 @@
+
+#add velocity for MD simulations
+def add_velocity( path_to_MD_CONTCAR ):
+	with open( path_to_MD_CONTCAR +  "/CONTCAR", 'r' ) as f:
+		lines = f.readlines()
+
+	fout =open( 'POSCAR', 'a' )
+	w = False
+	for line in lines:
+		if line.strip() == '' and not w:
+			w = True
+		if line.strip() == '1':
+			w = False
+		if w:
+			fout.write( line.strip() + '\n')
+	fout.close()
+
 def change_atomic_number( system, lst ):
 	from ase.visualize import view
 	for i in lst:
