@@ -5,15 +5,19 @@ from ase.build import add_adsorbate
 import numpy as np
 
 
-#atoms_list = list of lists of atom indices to be consider for the collective cordianates
-def get_ICONST( atoms_list, choice = None ):
-	with open( "ICONST", "w" ) as file:
-		for i in atoms_list:
-			file.write( "R " + str( i[ 0 ] + 1 ) + " " + str( i[ 1 ] + 1 ) + " 0 \n" )
-		if choice:
-			file.write( "S 1 -1 0 \n")
-		else:
-			file.write( "S 1 0 0 0 \n" )
+# Function to generate the "ICONST" file for collective coordinates
+#atoms_list: A list of lists, where each sublist contains two atom indices that define a collective coordinate.
+#choice: An optional parameter. If defined, it changes the format of the last line in the file.
+def get_ICONST(atoms_list, choice=None):
+    with open("ICONST", "w") as file:
+        # Write each atom pair to the file in the format "R atom1 atom2 0"
+        for i in atoms_list:
+            file.write("R " + str(i[0] + 1) + " " + str(i[1] + 1) + " 0 \n")
+        # Write the final line based on whether 'choice' is defined or not
+        if choice:
+            file.write("S 1 -1 0 \n")  # Format for when 'choice' is defined
+        else:
+            file.write("S 1 0 0 0 \n")  # Format for when 'choice' is not defined
 
 
 #Shift the entire system so that the atom at index N is centered in the XY-plane of the simulation cell.
