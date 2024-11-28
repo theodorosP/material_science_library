@@ -4,6 +4,18 @@ from dlePy.vasp.chgcar import read_chgcar, write_chgcar
 from ase.build import add_adsorbate
 import numpy as np
 
+
+#atoms_list = list of lists of atom indices to be consider for the collective cordianates
+def get_ICONST( atoms_list, choice = None ):
+	with open( "ICONST", "w" ) as file:
+		for i in atoms_list:
+			file.write( "R " + str( i[ 0 ] + 1 ) + " " + str( i[ 1 ] + 1 ) + " 0 \n" )
+		if choice:
+			file.write( "S 1 -1 0 \n")
+		else:
+			file.write( "S 1 0 0 0 \n" )
+
+
 #Shift the entire system so that the atom at index N is centered in the XY-plane of the simulation cell.
 #system (Atoms): The atomic system (structure) read using ASE, e.g., via `ase.io.read`.
 #N (int): Index of the atom to center. Typically, this is the index of an atom in the dissociating molecule (e.g., Oxygen in H2O or Nitrogen in a cation).
