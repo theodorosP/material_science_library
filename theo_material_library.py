@@ -8,14 +8,14 @@ import numpy as np
 # Function to generate the "ICONST" file for collective coordinates
 #atoms_list: A list of lists, where each sublist contains two atom indices that define a collective coordinate.
 #choice: An optional parameter. If defined, it changes the format of the last line in the file.
-def get_ICONST(atoms_list, choice=None):
+def get_ICONST( atoms_list, choice = None ):
 	with open("ICONST", "w") as file:
 		for i in atoms_list:
-			file.write("R " + str(i[0] + 1) + " " + str(i[1] + 1) + " 0 \n")
+			file.write( "R " + str( i[ 0 ] + 1 ) + " " + str( i[ 1 ] + 1 ) + " 0 \n" )
 		if choice:
-			file.write("S 1 -1 0 \n")  # Format for when 'choice' is defined
+			file.write( "S 1 -1 0 \n" )
 		else:
-			file.write("S 1 0 0 0 \n")  # Format for when 'choice' is not defined
+			file.write( "S 1 0 0 0 \n" )
 
 
 #Shift the entire system so that the atom at index N is centered in the XY-plane of the simulation cell.
