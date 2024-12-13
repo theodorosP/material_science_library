@@ -50,6 +50,17 @@ def add_velocity( path_to_MD_CONTCAR ):
 	new_struc = read( "POSCAR" )
 	return new_struc
 
+#atoms (Atoms): The complete atomic structure.
+#group (list or array): Indices of atoms to be rotated.
+#axis (tuple or list): Rotation axis as a vector (e.g., (1, 0, 0)).
+#angle (float): Rotation angle (degrees or radians).
+#center (tuple or list): Point around which the rotation occurs.
+def rotate_group( atoms, group, axis, angle, center ):
+    subsys = atoms[ group ]
+    subsys.rotate( angle, axis, center, rotate_cell = False )
+    atoms.positions[ group ] = subsys.positions
+    return atoms
+
 def change_atomic_number( system, lst ):
     for i in lst:
         if system[ i ].symbol == "O" or system[ i ].symbol == "N":
